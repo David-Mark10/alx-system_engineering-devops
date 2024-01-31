@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Get the list of all listening sockets
+sockets=$(sudo netstat -tunlp | grep LISTEN)
+
+# Loop through each socket and extract the PID and program name
+while read -r line; do
+    pid=$(echo "$line" | awk '{print $7}' | cut -d'/' -f1)
+    program=$(echo "$line" | awk '{print $7}' | cut -d'/' -f2-)
+    echo "Socket: $line"
+    echo "PID: $pid"
+    echo "Program: $program"
+    echo ""
+done <<< "$sockets"
